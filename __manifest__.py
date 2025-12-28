@@ -7,7 +7,7 @@
     'website': '',
     'license': 'LGPL-3',
     'category': 'Productivity',
-    'depends': 'base_model',
+    'depends': ['base'],
     'data': [
         'views/todo_views.xml',
         'security/ir.model.access.csv',
