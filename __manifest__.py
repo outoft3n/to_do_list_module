@@ -7,16 +7,12 @@
     'website': '',
     'license': 'LGPL-3',
     'category': 'Productivity',
-    'depends': [],
+    'depends': 'base_model',
     'data': [
         'views/todo_views.xml',
         'security/ir.model.access.csv',
         'data/tag_data.xml'
     ],
-    'demo': [],
     'auto_install': True,
     'application': True,
-    'assets': {
-        
-    }
 }
