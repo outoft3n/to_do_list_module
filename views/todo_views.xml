@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="todo_list_view_list" model="ir.ui.view">
+        <field name="name">todo_list.view.list</field>
+        <field name="model">todo.list</field>
+        <field name="arch" type="xml">
+            <list string="To Do List">
+                <field name="title" string="Title"/>
+                <field name="start_date" string="Start Date"/>
+                <field name="end_date" string="End Date"/>
+                <field name="tag_ids" widget="many2many_tags" string="Tags"/>
+            </list> </field>
+    </record>
+
+    <record id="todo_list_view_form" model="ir.ui.view">
+        <field name="name">todo_list.view.form</field>
+        <field name="model">todo.list</field>
+        <field name="arch" type="xml">
+            <form string="To Do List" edit="status != 'complete'">
+                <header>
+                    <button name="action_in_progress" 
+                            string="PROGRESS" 
+                            type="object" 
+                            class="oe_highlight" 
+                            invisible="status != 'draft'"/>
+
+                    <field name="all_sub_completed" invisible="1"/> 
+                    
+                    <button name="action_done" 
+                            string="DONE" 
+                            type="object" 
+                            class="oe_highlight" 
+                            invisible="status != 'in_progress' or all_sub_completed == False"/>
+
+                    <field name="status" widget="statusbar" statusbar_visible="draft,in_progress,complete"/>
+                </header>
+                <sheet>
+                    <group>
+                        <field name="title" string="Title" readonly="status == 'complete'"/>
+                    </group>
+                    <group>
+                        <group>
+                            <field name="tag_ids"
+                                widget="many2many_tags"
+                                options="{'color_field': 'color'}"
+                                string="Tags"
+                                readonly="status == 'complete'"/>
+                        </group>
+                        <group>
+                            <field name="start_date" string="Start Date" readonly="status == 'complete'"/>
+                            <field name="end_date" string="End Date" readonly="status == 'complete'"/>
+                        </group>
+                    </group>
+                    <notebook invisible="status == 'draft'">
+                        <page string="List" name="sub_tasks">
+                            <field name="sub_list_ids" readonly="status == 'complete'">
+                                <list editable="bottom">
+                                    <field name="title" string="Name"/>
+                                    <field name="description" string="Description"/>
+                                    <field name="isComplete" string="Is Complete"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Attendee" name="attendees">
+                            <field name="attendee_ids" readonly="status == 'complete'">
+                                <list editable="bottom">
+                                    <field name="user_id" string="Attendee"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="todo_list_tag_view_list" model="ir.ui.view">
+        <field name="name">todo.list.tag.view.list</field>
+        <field name="model">todo.list.tag</field>
+        <field name="arch" type="xml">
+            <list string="Tags">
+                <field name="name"/>
+                <field name="color" widget="color_picker"/>
+            </list>
+        </field>
+    </record>
+
+
+    <record id="todo_list_tag_view_form" model="ir.ui.view">
+        <field name="name">todo.list.tag.view.form</field>
+        <field name="model">todo.list.tag</field>
+        <field name="arch" type="xml">
+            <form string="Tag">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="color" widget="color_picker"/>
+                    </group>
+                    <footer>
+                        <button string="Save" class="oe_highlight" type="object"/>
+                        <button string="Discard" special="cancel"/>
+                    </footer>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+
+    <record id="todo_list_action" model="ir.actions.act_window">
+        <field name="name">To Do List</field>
+        <field name="res_model">todo.list</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="todo_list_uncomplete_action" model="ir.actions.act_window">
+        <field name="name">Todo list uncompelete</field>
+        <field name="res_model">todo.list</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('status', '!=', 'complete')]</field>
+    </record>
+
+    <record id="todo_list_complete_action" model="ir.actions.act_window">
+        <field name="name">Todo list compelete</field>
+        <field name="res_model">todo.list</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('status', '==', 'complete')]</field>
+    </record>
+
+    <record id="todo_list_tag_action" model="ir.actions.act_window">
+        <field name="name">Tags</field>
+        <field name="res_model">todo.list.tag</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <menuitem id="root_todo_menu" name="To-do List" sequence="10"/>
+        <menuitem
+            id="todo_list_menu"
+            name="To-do List"
+            action="todo_list_action"
+            parent="root_todo_menu"
+            sequence="1"/>
+        <menuitem
+            id="todo_list_uncomplete_menu"
+            name="To-do List Uncomplete"
+            action="todo_list_uncomplete_action"
+            parent="root_todo_menu"
+            sequence="1"/>
+        <menuitem
+            id="todo_list_complete_menu"
+            name="To-do List Complete"
+            action="todo_list_complete_action"
+            parent="root_todo_menu"
+            sequence="1"/>
+    
+</odoo>

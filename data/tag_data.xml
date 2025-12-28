@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="work_tag" model="todo.list.tag">
+        <field name="name">Work</field>
+        <field name="color">1</field>
+    </record>
+    <record id="event_tag" model="todo.list.tag">
+        <field name="name">Event</field>
+        <field name="color">4</field>
+    </record>
+    <record id="life_tag" model="todo.list.tag">
+        <field name="name">Life achievement</field>
+        <field name="color">10</field>
+    </record>
+
+</odoo>
